@@ -24,6 +24,7 @@ TLAT = ncread(filename,'TLAT');
 TLON = ncread(filename,'TLONG');
 TEMP = ncread(filename,'TEMP');
 TAREA = ncread(filename,'TAREA').*0.0001; % convert from cm2 to m2
+PAR_avg = ncread(filename,'PAR_avg');
 load woa_grid.mat
 
 % small phyto
@@ -106,8 +107,13 @@ diazC.m(M3d(:,:,1) == 0) = NaN; %exclude land0
 
 TEMP = TEMP(:,:,1);
 TEMP = interpTo90x180(TLON,TLAT,TEMP,'nearest');
-TEMP.m(TEMP.m == 0) = NaN; % exclude inland seas
+%TEMP.m(TEMP.m == 0) = NaN; % exclude inland seas
 TEMP.m(M3d(:,:,1) == 0) = NaN; %exclude land0
+
+PAR_avg = PAR_avg(:,:,1);
+PAR_avg = interpTo90x180(TLON,TLAT,PAR_avg,'nearest');
+PAR_avg.m(PAR_avg.m == 0) = NaN; % exclude inland seas
+PAR_avg.m(M3d(:,:,1) == 0) = NaN; %exclude land0
 
 out.diatFe = diatFe.m;
 out.diatN = diatN.m;
@@ -125,6 +131,7 @@ out.spP = spP.m;
 out.spPar = spPar.m;
 out.spC = spC.m;
 out.TEMP = TEMP.m;
+out.PAR_avg = PAR_avg.m;
 out.x = diatFe.x;
 out.y = diatFe.y;
 
